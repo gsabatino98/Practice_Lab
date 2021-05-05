@@ -112,8 +112,8 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_customSender ../src/test_pub_custom.cpp)
-add_executable(${PROJECT_NAME}_customReceiver ../src/test_rec_custom.cpp)
+add_executable(${PROJECT_NAME}_customSender src/test_pub_custom.cpp)
+add_executable(${PROJECT_NAME}_customReceiver src/test_rec_custom.cpp)
 
 target_link_libraries(
     ${PROJECT_NAME}_customSender
