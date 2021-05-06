@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(publisher_subscriber_msgs)
+project(publisher_subscriber_test_custom)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,11 +7,7 @@ project(publisher_subscriber_msgs)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-    message_generation
-    sensor_msgs
-    roscpp
-)
+find_package(catkin REQUIRED COMPONENTS roscpp publisher_subscriber_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -47,16 +43,8 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
-add_message_files( 
-    FILES
-    diagnosticRobot.msg
-    jointInfo.msg
-)
+ 
+
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -72,11 +60,7 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
-generate_messages(DEPENDENCIES sensor_msgs)
+
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -107,14 +91,7 @@ generate_messages(DEPENDENCIES sensor_msgs)
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES publisher_subscriber_msgs
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-    CATKIN_DEPENDS message_runtime
- )
-
+catkin_package()
 ###########
 ## Build ##
 ###########
@@ -123,7 +100,20 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+ ${catkin_INCLUDE_DIRS}
+)
+
+add_executable(${PROJECT_NAME}_customSender src/test_pub_custom.cpp)
+add_executable(${PROJECT_NAME}_customReceiver src/test_rec_custom.cpp)
+
+target_link_libraries(
+    ${PROJECT_NAME}_customSender
+    ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}_customReceiver
+    ${catkin_LIBRARIES}
 )
 
 ## Declare a C++ library
