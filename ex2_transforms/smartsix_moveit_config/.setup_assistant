@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: comau_description
+    relative_path: robot/smartsix.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/smartsix.srdf
+  CONFIG:
+    author_name: Gerardo Sabatino
+    author_email: g.sabatino27@studenti.unisa.it
+    generated_timestamp: 1621005798
