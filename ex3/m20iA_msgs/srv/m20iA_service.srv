@@ -1,0 +1,5 @@
+moveit_msgs/RobotState robot_state
+---
+string fk_link_name
+string[] frame_id
+geometry_msgs/Pose[] pose_stamped
