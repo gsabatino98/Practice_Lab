@@ -7,7 +7,7 @@ project(m20ia_server_client)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED roscpp m20iA_msgs moveit_ros_planning_interface tf tf_conversions)
+find_package(catkin REQUIRED roscpp m20iA_msgs moveit_ros_planning_interface eigen_conversions)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

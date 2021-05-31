@@ -4,7 +4,7 @@
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/robot_state/conversions.h>
 #include <moveit/transforms/transforms.h>
-#include <tf_conversions/tf_eigen.h>
+#include <eigen_conversions/eigen_msg.h>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
 
@@ -27,31 +27,11 @@ bool fk(m20iA_msgs::m20iA_service::Request &req, m20iA_msgs::m20iA_service::Resp
   res.fk_link_name = "flange";
   for (int i = 0; i < 6; i++)
   {
-    const Eigen::Affine3d& link_t = kinematic_state->getGlobalLinkTransform(r_link[i]);
+    const Eigen::Isometry3d& link_t = kinematic_state->getGlobalLinkTransform(r_link[i]);
 
     ROS_INFO_STREAM("link_name:\t"<<r_link[i]);
-
-    Eigen::Matrix3d rotMat = link_t.rotation();
-    Eigen::Block<const Eigen::Matrix4d, 3, 1, true> pos = link_t.translation();
-
-    tf::Matrix3x3 tfMat;
-    tf::Vector3 tfVec;
-
-    tf::matrixEigenToTF(rotMat,tfMat);
-    tf::vectorEigenToTF(pos,tfVec);
     
-    tf::Quaternion q;
-
-    tfMat.getRotation(q);
-
-    res.pose_stamped[i].position.x = tfVec.x();
-    res.pose_stamped[i].position.y = tfVec.y();
-    res.pose_stamped[i].position.z = tfVec.z();
-
-    res.pose_stamped[i].orientation.x = q.x();
-    res.pose_stamped[i].orientation.y = q.y();
-    res.pose_stamped[i].orientation.z = q.z();
-    res.pose_stamped[i].orientation.w = q.w();
+    tf::poseEigenToMsg(link_t, res.pose_stamped[i]);
 
     res.frame_id[i] = r_link[i];
     
