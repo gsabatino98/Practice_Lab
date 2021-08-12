@@ -1,0 +1,6 @@
+int64 timestamp
+float64 position
+float64 velocity
+float64 acceleration
+sensor_msgs/Temperature joint_temp
+bool satus_sensors
