@@ -1,0 +1,9 @@
+# Goal
+moveit_msgs/RobotState robot_state
+geometry_msgs/Pose pose_goal
+---
+# Result
+moveit_msgs/RobotState[] robot_state
+---
+# Feedback
+moveit_msgs/RobotState robot_state

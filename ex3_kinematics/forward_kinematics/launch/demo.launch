@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find fanuc_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="client_node"
+        pkg="forward_kinematics"
+        type="forward_kinematics_client_node"
+        respawn="false" output="screen">
+    <rosparam command="load" file="$(find fanuc_moveit_config)/config/kinematics.yaml"/>
+  </node>
+
+</launch>

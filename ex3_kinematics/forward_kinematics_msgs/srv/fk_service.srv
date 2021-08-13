@@ -1,0 +1,7 @@
+# Request
+moveit_msgs/RobotState robot_state
+---
+# Response
+string fk_link_name
+string[] frame_id
+geometry_msgs/Pose[] pose_stamped
