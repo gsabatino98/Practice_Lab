@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+    <include file="$(find smartsix_moveit_config)/launch/demo_gazebo.launch" />
+    <include file="$(find smartsix_controller)/launch/smartsix_controller.launch" />
+    <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"/>
+
+</launch>

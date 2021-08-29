@@ -1,0 +1,9 @@
+<launch>
+
+  <arg name="debugger_attached" default="false"/>
+
+  <node name="smartsix_controller" pkg="smartsix_controller" type="smartsix_controller" respawn="false" output="screen" unless="$(arg debugger_attached)">
+    <param name="topic_trajectory" type="str" value="/smartsix/trajectory_controller/command"/>
+  </node>
+
+</launch> 
