@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     // ^^^^^^^^^^^^^^^^^^^^^^^^^
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start");
    
-    /* Cartesian Path1
+    /* Cartesian Path
      * ^^^^^^^^^^^^^^^
      * We plan a Cartesian path by giving some waypoints,
      * then ask the planner to interpolate between them to have a higher number of waypoints that we can use for planning.
@@ -127,13 +127,6 @@ int main(int argc, char **argv)
     // message to specify trajectories to joint_trajectory_controller
     moveit_msgs::RobotTrajectory trajectory;
 
-    // We want the Cartesian path to be interpolated at a resolution of 1 cm
-    // which is why we will specify 0.01 as the max step in Cartesian
-    // translation.  We will specify the jump threshold as 0.0, effectively disabling it.
-    // Warning - disabling the jump threshold while operating real hardware can cause
-    // large unpredictable motions of redundant joints and could be a safety issue
-    // const double jump_threshold = 0.0;
-    // const double eef_step = 0.01;
     const double jump_threshold = 0.0;
     const double eef_step = 0.01;
     double fraction = move_group.computeCartesianPath(wst.getWaypoints(), eef_step, jump_threshold, trajectory);
