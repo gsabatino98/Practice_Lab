@@ -46,8 +46,7 @@ public:
                 }
             }            
         }
-        return false;
-        
+        return false;        
     }
 
     void sendFeedback(std::vector<double> ik_solution, moveit_msgs::RobotState r_state){
@@ -60,9 +59,7 @@ public:
         {
             ROS_INFO_STREAM("\t"<<feedback_.robot_state.joint_state.position[i]);
         }
-        
         as.publishFeedback(feedback_);
-
     }
 
     void sendResult(std::string msg_goal){
@@ -87,7 +84,7 @@ public:
         robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
         robot_state::RobotState r_state(kinematic_model);
     
-        moveit::core::robotStateMsgToRobotState(robot_solution,r_state);
+        moveit::core::robotStateMsgToRobotState(robot_solution,r_state); 
 
         const kinematics::KinematicsBaseConstPtr solver = r_state.getJointModelGroup("fanuc_m20ia")->getSolverInstance();
 
@@ -104,7 +101,7 @@ public:
         {
             // solver->getPositionIK(pose,ik_seed,solution,code);
             solver->searchPositionIK(pose,ik_seed,timeout,solution,code,opt);
-            // && (same_solution == 0 || check_solution(all_solutions,solution)==true)
+
             if (code.val==code.SUCCESS && (all_solutions.size()==0 || check_solution(all_solutions,solution)==true))
             {
                 ROS_INFO("NUOVA SOLUZIONE");
@@ -118,14 +115,14 @@ public:
                 same_solution += 1;
             }
             
-            if (same_solution == 1000 || all_solutions.size()==7)
+            if (same_solution == 1000 || all_solutions.size()==8)
             {
                 break;
             }
             
         }        
 
-        if (all_solutions.size()==7)
+        if (all_solutions.size()==8)
         {
             sendResult("Trovate tutte le possibili configurazioni");
         }
@@ -148,6 +145,5 @@ int main(int argc, char **argv)
     ROS_INFO("Avvio server IK solver");
     IK_Solver action("ik_fanuc_m20ia");
     ros::spin();
-    ros::shutdown();
     return 0;
 }
