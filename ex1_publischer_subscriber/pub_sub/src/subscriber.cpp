@@ -9,7 +9,7 @@ using namespace std;
 
 void chatterCallback(
     const pub_sub_msgs::jointsInfo& robotMsgs){
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < 6; i++){
         ROS_INFO_STREAM("I heard from:\t"<<robotMsgs.joint_name[i]<<
         "\nDiagnosis occurred:\t"<<robotMsgs.diagnostic[i].timestamp<<
         "\nJoint position:\t"<<robotMsgs.diagnostic[i].position<<
@@ -29,8 +29,7 @@ void chatterCallback(
 int main(int argc, char **argv){
     ros::init(argc, argv, "listener");
     ros::NodeHandle nodeHandle;
-    ros::Subscriber subscriber =
-    nodeHandle.subscribe("joints_position",10,chatterCallback);
+    ros::Subscriber subscriber = nodeHandle.subscribe("joints_position",10,chatterCallback);
     ros::spin();
     return 0;
 }
