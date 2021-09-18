@@ -44,49 +44,43 @@ int main(int argc, char** argv) {
     tf2_ros::TransformListener tfListener(tfBuffer);
 
     ros::Rate rate(10.0);
+
+    std::vector<geometry_msgs::TransformStamped> transformStamped;
     
     while(ros::ok()) {
-        geometry_msgs::TransformStamped transformStamped;
+        
         try{
             
-            transformStamped = tfBuffer.lookupTransform("base_link", "flange", ros::Time(0));
+            transformStamped.push_back(tfBuffer.lookupTransform("base_link", "flange", ros::Time(0)));
         }
         catch (tf2::TransformException &exception) {
         ROS_WARN("%s", exception.what());
         ros::Duration(1.0).sleep();
         continue;
         }
-        
-        double x = transformStamped.transform.rotation.x;
-        double y = transformStamped.transform.rotation.y;
-        double z = transformStamped.transform.rotation.z;
-        double w = transformStamped.transform.rotation.w;
-        geometry_msgs::Vector3 t=transformStamped.transform.translation;
-
-        ROS_INFO_STREAM("\n\nChild frame id:\t"<<transformStamped.child_frame_id<<"\nFrame id:\t"<<transformStamped.header.frame_id<<"\n"<<
-        "\nQuaternion:\t["<<x<<", "<<y<<", "<<z<<", "<<w<<"]\n"<<
-        "\nTranslation:\t["<<t.x<<", "<<t.y<<", "<<t.z<<"]\n");
-        print_rotMat_eulerRPY_axisAngle(x,y,z,w);
 
         for (int i = 0; i < 6; i++)
         {
             try{
-            transformStamped = tfBuffer.lookupTransform("link"+std::to_string(i+1),"flange", ros::Time(0));
+            transformStamped.push_back(tfBuffer.lookupTransform("link"+std::to_string(i+1),"flange", ros::Time(0)));
             }
             catch (tf2::TransformException &exception) {
             ROS_WARN("%s", exception.what());
             ros::Duration(1.0).sleep();
             continue;
+            }
         }
-            double x = transformStamped.transform.rotation.x;
-            double y = transformStamped.transform.rotation.y;
-            double z = transformStamped.transform.rotation.z;
-            double w = transformStamped.transform.rotation.w;
-            geometry_msgs::Vector3 t=transformStamped.transform.translation;
+        for (int i = 0; i < 6; i++)
+        {
+            double x = transformStamped[i].transform.rotation.x;
+            double y = transformStamped[i].transform.rotation.y;
+            double z = transformStamped[i].transform.rotation.z;
+            double w = transformStamped[i].transform.rotation.w;
+            geometry_msgs::Vector3 t=transformStamped[i].transform.translation;
 
-            ROS_INFO_STREAM("\n\nChild frame id:\t"<<transformStamped.child_frame_id<<"\nFrame id:\t"<<transformStamped.header.frame_id<<"\n"<<
+            ROS_INFO_STREAM("\n\nChild frame id:\t"<<transformStamped[i].child_frame_id<<"\nFrame id:\t"<<transformStamped[i].header.frame_id<<"\n"<<
             "\nQuaternion:\t["<<x<<", "<<y<<", "<<z<<", "<<w<<"]\n"<<
-            "\nTranslation:\t["<<t.x<<", "<<t.y<<", "<<t.z<<"]\n");
+            "\nTranslation:\t["<<t.x<<", "<<t.y<<", "<<t.z<<"]\n\n");
             print_rotMat_eulerRPY_axisAngle(x,y,z,w);
         }
         
