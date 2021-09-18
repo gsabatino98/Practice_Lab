@@ -18,27 +18,13 @@ bool fk(forward_kinematics_msgs::fk_service::Request &req, forward_kinematics_ms
     moveit::core::robotStateMsgToRobotState(req.robot_state,r_state);
 
     const robot_state::JointModelGroup* joint_model_group = r_state.getRobotModel()->getJointModelGroup("fanuc_m20ia");
-    const std::vector<std::string>& r_link = joint_model_group->getLinkModelNames();
+    const std::vector<std::string>& r_link = joint_model_group->getLinkModelNames(); 
 
-    int linkNumber = r_link.size()-1;
-    ROS_INFO_STREAM("\n\n"<<linkNumber);
-    res.pose_stamped.resize(linkNumber);
-    res.frame_id.resize(linkNumber);
-    res.fk_link_name = r_link[linkNumber];   
+    const Eigen::Isometry3d& link_t = r_state.getGlobalLinkTransform(r_link.back());
 
-    for (int i = 0; i < linkNumber; i++)
-    {
-        const Eigen::Isometry3d& link_t = r_state.getGlobalLinkTransform(r_link[i]);
+    tf::poseEigenToMsg(link_t, res.pose_stamped);    
 
-        ROS_INFO_STREAM("link_name:\t"<<r_link[i]);
-
-        tf::poseEigenToMsg(link_t, res.pose_stamped[i]);
-
-        res.frame_id[i] = r_link[i];
-        
-    }
-
-    ROS_INFO("Message sent !!!");
+    ROS_INFO("Pose sent !!!");
 
     return true;
 }
